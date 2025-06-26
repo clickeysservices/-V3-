@@ -173,7 +173,7 @@
   <section class="bikes" aria-label="Recommended Dirtbikes">
     <article class="bike-card">
       <a href="https://xprousa.com/products/x-pro-x9-125cc-dirt-bike-with-4-speed-manual-transmission-kick-start-big-17-14-tires-cradle-type-steel-tube-frame" target="_blank" rel="noopener noreferrer">
-        <img src="https://i.imgur.com/eB9h3tX.jpg" alt="XPro X9 125cc Dirtbike" class="bike-img" />
+        <img src="https://cdn.shopify.com/s/files/1/0519/4559/2017/products/x9-125cc-main1_800x.jpg?v=1631074915" alt="XPro X9 125cc Dirtbike" class="bike-img" />
         <h3 class="bike-name">XPro X9 125cc</h3>
       </a>
       <div class="bike-content">
@@ -184,7 +184,7 @@
 
     <article class="bike-card">
       <a href="https://www.kawasaki.com/motorsports/off-road/klx-140" target="_blank" rel="noopener noreferrer">
-        <img src="https://i.imgur.com/NkSGuMd.jpg" alt="Kawasaki KLX 125" class="bike-img" />
+        <img src="https://cdn.kawasaki.com/-/media/kawasaki/product-images/off-road/klx-140/model-image/2023-klx-140-action-01.ashx" alt="Kawasaki KLX 125" class="bike-img" />
         <h3 class="bike-name">Kawasaki KLX 125</h3>
       </a>
       <div class="bike-content">
@@ -195,7 +195,7 @@
 
     <article class="bike-card">
       <a href="https://www.yamaha-motor.eu/offroad/products/enduro-and-motocross/yz85-monster-energy-edition/" target="_blank" rel="noopener noreferrer">
-        <img src="https://i.imgur.com/tmz0q7F.jpg" alt="Yamaha YZ85 Monster Edition" class="bike-img" />
+        <img src="https://cdn.yamaha-motor.eu/globalassets/products/offroad/yz85-monster-energy-edition-2023.png" alt="Yamaha YZ85 Monster Edition" class="bike-img" />
         <h3 class="bike-name">Yamaha YZ85 Monster Edition</h3>
       </a>
       <div class="bike-content">
@@ -206,7 +206,7 @@
 
     <article class="bike-card">
       <a href="https://powersports.honda.com/off-road/models/crf125f" target="_blank" rel="noopener noreferrer">
-        <img src="https://i.imgur.com/7HEQKnf.jpg" alt="Honda CRF 125F" class="bike-img" />
+        <img src="https://powersports.honda.com/-/media/PSCOM/Honda/Powersports/Models/Offroad/CRF125F/2024/honda_2024_crf125f_glacier-white_action_01.jpg" alt="Honda CRF 125F" class="bike-img" />
         <h3 class="bike-name">Honda CRF 125F</h3>
       </a>
       <div class="bike-content">
@@ -217,7 +217,7 @@
 
     <article class="bike-card">
       <a href="https://www.suzuki.com/motorsports/motorcycle-models/2023-rmz250/" target="_blank" rel="noopener noreferrer">
-        <img src="https://i.imgur.com/yhRrA6J.jpg" alt="Suzuki RM-Z250" class="bike-img" />
+        <img src="https://cdn.suzuki-motorcycle.eu/media/cache/resolve/media/image/0001/03/thumb_11148_default_1280_1280_auto.jpg" alt="Suzuki RM-Z250" class="bike-img" />
         <h3 class="bike-name">Suzuki RM-Z250</h3>
       </a>
       <div class="bike-content">
@@ -256,12 +256,12 @@
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    document.getElementById('countdown').innerHTML = 
+    document.getElementById('countdown').innerHTML = `
       <div><strong>${days}</strong> Days</div>
       <div><strong>${hours.toString().padStart(2,'0')}</strong> Hours</div>
       <div><strong>${minutes.toString().padStart(2,'0')}</strong> Minutes</div>
       <div><strong>${seconds.toString().padStart(2,'0')}</strong> Seconds</div>
-    ;
+    `;
   }
 
   updateCountdown();
@@ -302,7 +302,7 @@
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = rgba(255, 255, 255, ${this.opacity});
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
       ctx.fill();
     }
   }
@@ -333,5 +333,6 @@
   animateSnow();
 </script>
 
-</body> 
-  </html>
+</body>
+</html>
+
