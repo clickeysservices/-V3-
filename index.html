@@ -28,13 +28,11 @@
       border-bottom: 4px solid #ffd700;
       box-shadow: 0 0 20px #ffd700aa;
     }
-
     header .brand {
       font-size: 3.5rem;
       letter-spacing: 4px;
       user-select: text;
     }
-
     header .subtitle {
       font-size: 1.4rem;
       margin-top: 8px;
@@ -42,7 +40,6 @@
       color: #ffd700;
       text-shadow: 0 0 5px #fffacd;
     }
-
     header .decor {
       font-size: 1.8rem;
       user-select: none;
@@ -71,6 +68,59 @@
       letter-spacing: 2px;
     }
 
+    section.bikes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .bike-card {
+      background: #004d0040;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 25px #006400aa;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .bike-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #ffd700cc, 0 0 12px #32cd32cc;
+    }
+
+    .bike-img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      height: 190px;
+      cursor: pointer;
+      border-bottom: 3px solid #ffd700;
+      border-radius: 20px 20px 0 0;
+      filter: drop-shadow(0 0 6px #32cd32);
+    }
+
+    .bike-content {
+      padding: 18px 22px 24px 22px;
+    }
+
+    .bike-name {
+      font-weight: 900;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      color: #ffd700;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .bike-price {
+      font-weight: 700;
+      color: #32cd32;
+      margin-bottom: 14px;
+    }
+
+    .bike-desc {
+      font-size: 1rem;
+      color: #e6f0d8;
+    }
+
     footer {
       text-align: center;
       padding: 25px 10px;
@@ -92,6 +142,18 @@
       width: 100vw;
       height: 100vh;
     }
+
+    @media (max-width: 600px) {
+      header .brand {
+        font-size: 2.8rem;
+      }
+      .bike-card {
+        border-radius: 15px;
+      }
+      .bike-img {
+        height: 160px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -104,6 +166,63 @@
 
 <main>
   <div class="countdown" id="countdown">Loading countdown...</div>
+
+  <section class="bikes" aria-label="Recommended Dirtbikes">
+    <article class="bike-card">
+      <a href="https://xprousa.com/products/x-pro-x9-125cc-dirt-bike-with-4-speed-manual-transmission-kick-start-big-17-14-tires-cradle-type-steel-tube-frame" target="_blank" rel="noopener noreferrer">
+        <img src="https://th.bing.com/th/id/OIP.gueZYB1R3u2QqLTk5jLkBwHaE9?w=250&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="XPro X9 125cc Dirtbike" class="bike-img" />
+        <h3 class="bike-name">XPro X9 125cc</h3>
+      </a>
+      <div class="bike-content">
+        <p class="bike-price">$989 USD</p>
+        <p class="bike-desc">Reliable 125cc dirtbike perfect for beginners and intermediate riders. Lightweight with a solid frame and smooth handling for trail or track.</p>
+      </div>
+    </article>
+
+    <article class="bike-card">
+      <a href="https://www.kawasaki.com/motorsports/off-road/klx-140" target="_blank" rel="noopener noreferrer">
+        <img src="https://th.bing.com/th/id/OIP.VrjQjHW6fzxwAE8JkZxeNgHaFj?w=245&h=184&c=7&r=0&o=7&pid=1.7&rm=3" alt="Kawasaki KLX 125" class="bike-img" />
+        <h3 class="bike-name">Kawasaki KLX 125</h3>
+      </a>
+      <div class="bike-content">
+        <p class="bike-price">$3,399 USD</p>
+        <p class="bike-desc">Trusted Kawasaki model, 125cc four-stroke engine, ideal for off-road adventures. Known for durability and great resale value.</p>
+      </div>
+    </article>
+
+    <article class="bike-card">
+      <a href="https://www.yamaha-motor.eu/offroad/products/enduro-and-motocross/yz85-monster-energy-edition/" target="_blank" rel="noopener noreferrer">
+        <img src="https://th.bing.com/th/id/OIP.CMGYzzvs_MF7izMj-Y1PNgHaE8?w=290&h=188&c=7&r=0&o=5&pid=1.7" alt="Yamaha YZ85 Monster Edition" class="bike-img" />
+        <h3 class="bike-name">Yamaha YZ85 Monster Edition</h3>
+      </a>
+      <div class="bike-content">
+        <p class="bike-price">$4,199 USD</p>
+        <p class="bike-desc">Aggressive 85cc dirtbike with upgraded suspension and monster graphics. Great for young riders seeking competition-level performance.</p>
+      </div>
+    </article>
+
+    <article class="bike-card">
+      <a href="https://powersports.honda.com/off-road/models/crf125f" target="_blank" rel="noopener noreferrer">
+        <img src="https://th.bing.com/th/id/OIP.-MJZU6Pi57jxnLltGiMMbQHaDt?w=323&h=175&c=7&r=0&o=7&pid=1.7&rm=3" alt="Honda CRF 125F" class="bike-img" />
+        <h3 class="bike-name">Honda CRF 125F</h3>
+      </a>
+      <div class="bike-content">
+        <p class="bike-price">$2,799 USD</p>
+        <p class="bike-desc">Smooth and beginner-friendly 125cc bike with reliable Honda engineering. Perfect for new riders wanting a balance of power and control.</p>
+      </div>
+    </article>
+
+    <article class="bike-card">
+      <a href="https://www.suzuki.com/motorsports/motorcycle-models/2023-rmz250/" target="_blank" rel="noopener noreferrer">
+        <img src="https://th.bing.com/th/id/OIP.95hUDSHwZcHd9GtJwBX3xQHaE7?w=295&h=197&c=7&r=0&o=7&pid=1.7&rm=3" alt="Suzuki RM-Z250" class="bike-img" />
+        <h3 class="bike-name">Suzuki RM-Z250</h3>
+      </a>
+      <div class="bike-content">
+        <p class="bike-price">$6,599 USD</p>
+        <p class="bike-desc">High-performance 250cc four-stroke motocross bike with advanced suspension. Great for experienced riders wanting aggressive power and speed.</p>
+      </div>
+    </article>
+  </section>
 </main>
 
 <footer>
@@ -113,7 +232,7 @@
 <canvas id="snow-canvas"></canvas>
 
 <script>
-  // Countdown to December 25, 2025
+  // 🎄 Fixed Countdown to December 25, 2025
   const targetDate = new Date('December 25, 2025 00:00:00');
 
   function updateCountdown() {
@@ -121,7 +240,7 @@
     const diff = targetDate - now;
 
     if (diff <= 0) {
-      document.getElementById('countdown').innerHTML = "🎁 Merry Christmas!";
+      document.getElementById('countdown').innerHTML = "🚀 Your bike has arrived! Ride safe! 🏍️🔥";
       clearInterval(interval);
       return;
     }
@@ -131,14 +250,18 @@
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    document.getElementById('countdown').innerHTML =
-      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    document.getElementById('countdown').innerHTML = 
+      <div><strong>${days}</strong> Days</div>
+      <div><strong>${hours.toString().padStart(2,'0')}</strong> Hours</div>
+      <div><strong>${minutes.toString().padStart(2,'0')}</strong> Minutes</div>
+      <div><strong>${seconds.toString().padStart(2,'0')}</strong> Seconds</div>
+    ;
   }
 
   updateCountdown();
   const interval = setInterval(updateCountdown, 1000);
 
-  // Snowfall
+  // ❄️ Snowfall
   const canvas = document.getElementById('snow-canvas');
   const ctx = canvas.getContext('2d');
   let width, height;
@@ -163,14 +286,17 @@
     update() {
       this.y += this.speedY;
       this.x += this.speedX;
-      if (this.y > height) this.y = 0;
+      if (this.y > height) {
+        this.y = 0;
+        this.x = Math.random() * width;
+      }
       if (this.x > width) this.x = 0;
       if (this.x < 0) this.x = width;
     }
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+      ctx.fillStyle = rgba(255, 255, 255, ${this.opacity});
       ctx.fill();
     }
   }
