@@ -28,11 +28,13 @@
       border-bottom: 4px solid #ffd700;
       box-shadow: 0 0 20px #ffd700aa;
     }
+
     header .brand {
       font-size: 3.5rem;
       letter-spacing: 4px;
       user-select: text;
     }
+
     header .subtitle {
       font-size: 1.4rem;
       margin-top: 8px;
@@ -40,6 +42,7 @@
       color: #ffd700;
       text-shadow: 0 0 5px #fffacd;
     }
+
     header .decor {
       font-size: 1.8rem;
       user-select: none;
@@ -66,6 +69,13 @@
       margin-bottom: 40px;
       font-weight: 700;
       letter-spacing: 2px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .countdown > div {
+      min-width: 80px;
     }
 
     section.bikes {
@@ -81,6 +91,7 @@
       box-shadow: 0 0 25px #006400aa;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
     .bike-card:hover {
       transform: scale(1.05);
       box-shadow: 0 0 30px #ffd700cc, 0 0 12px #32cd32cc;
@@ -147,9 +158,11 @@
       header .brand {
         font-size: 2.8rem;
       }
+
       .bike-card {
         border-radius: 15px;
       }
+
       .bike-img {
         height: 160px;
       }
@@ -165,7 +178,7 @@
 </header>
 
 <main>
-  <div class="countdown" id="countdown">December 25, 2025 00:00:00'</div>
+  <div class="countdown" id="countdown">Loading countdown...</div>
 
   <section class="bikes" aria-label="Recommended Dirtbikes">
     <article class="bike-card">
@@ -232,7 +245,7 @@
 <canvas id="snow-canvas"></canvas>
 
 <script>
-  // 🎄 Fixed Countdown to December 25, 2025
+  // Countdown to Christmas 2025
   const targetDate = new Date('December 25, 2025 00:00:00');
 
   function updateCountdown() {
@@ -250,18 +263,18 @@
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    document.getElementById('countdown').innerHTML = 
+    document.getElementById('countdown').innerHTML = `
       <div><strong>${days}</strong> Days</div>
-      <div><strong>${hours.toString().padStart(2,'0')}</strong> Hours</div>
-      <div><strong>${minutes.toString().padStart(2,'0')}</strong> Minutes</div>
-      <div><strong>${seconds.toString().padStart(2,'0')}</strong> Seconds</div>
-    ;
+      <div><strong>${hours.toString().padStart(2, '0')}</strong> Hours</div>
+      <div><strong>${minutes.toString().padStart(2, '0')}</strong> Minutes</div>
+      <div><strong>${seconds.toString().padStart(2, '0')}</strong> Seconds</div>
+    `;
   }
 
   updateCountdown();
   const interval = setInterval(updateCountdown, 1000);
 
-  // ❄️ Snowfall
+  // Snow effect
   const canvas = document.getElementById('snow-canvas');
   const ctx = canvas.getContext('2d');
   let width, height;
@@ -296,7 +309,7 @@
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = rgba(255, 255, 255, ${this.opacity});
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
       ctx.fill();
     }
   }
