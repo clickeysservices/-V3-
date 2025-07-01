@@ -121,39 +121,6 @@
     color: #e6f0d8;
   }
 
-  /* Video container and button */
-  .video-container {
-    max-width: 640px;
-    margin: 40px auto 60px auto;
-    position: relative;
-    text-align: center;
-  }
-
-  #player {
-    width: 100%;
-    height: 360px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #ffd700cc;
-  }
-
-  #mute-btn {
-    margin-top: 10px;
-    background: #8b0000cc;
-    border: none;
-    color: #ffd700;
-    font-weight: 700;
-    padding: 10px 20px;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0 0 10px #ffd700aa;
-    transition: background 0.3s ease;
-    user-select: none;
-  }
-  #mute-btn:hover {
-    background: #ffd700cc;
-    color: #8b0000;
-  }
-
   footer {
     text-align: center;
     padding: 25px 10px;
@@ -177,6 +144,23 @@
     height: 100vh;
   }
 
+  /* Mute button fixed bottom right */
+  #mute-btn {
+    position: fixed; 
+    bottom: 20px; 
+    right: 20px; 
+    background: #8b0000cc; 
+    border: none; 
+    color: #ffd700; 
+    font-weight: 700; 
+    padding: 12px 18px; 
+    border-radius: 12px; 
+    cursor: pointer; 
+    box-shadow: 0 0 10px #ffd700aa; 
+    user-select: none;
+    z-index: 10000;
+  }
+
   @media (max-width: 600px) {
     header .brand {
       font-size: 2.8rem;
@@ -186,9 +170,6 @@
     }
     .bike-img {
       height: 160px;
-    }
-    #player {
-      height: 200px;
     }
   }
 </style>
@@ -262,12 +243,6 @@
       </div>
     </article>
   </section>
-
-  <!-- Video Embed with Sound Toggle -->
-  <div class="video-container">
-    <div id="player"></div>
-    <button id="mute-btn" aria-pressed="false">🔈 Sound Off</button>
-  </div>
 </main>
 
 <footer>
@@ -276,18 +251,28 @@
 
 <canvas id="snow-canvas"></canvas>
 
+<!-- Hidden YouTube video container -->
+<div class="video-container" style="position: fixed; bottom: 0; right: 0; width: 0; height: 0; overflow: hidden; z-index: 9999;">
+  <div id="player"></div>
+</div>
+
+<!-- Mute Toggle Button -->
+<button id="mute-btn" aria-pressed="true" title="Toggle Sound">
+  🔈 Sound Off
+</button>
+
 <script>
-  // Countdown to Dec 25, 2025
-  const targetDate = new Date("2025-12-25T00:00:00");
+  // Countdown setup: target date Dec 25 of current year (Christmas)
+  const targetDate = new Date(new Date().getFullYear(), 11, 25, 0, 0, 0, 0); // Dec 25, 00:00:00
 
   function updateCountdown() {
     const now = new Date();
-    const diff = targetDate - now;
+    let diff = targetDate - now;
 
-    if (diff <= 0) {
-      document.getElementById('countdown').innerHTML = "🚀 Your bike has arrived! Ride safe! 🏍️🔥";
-      clearInterval(interval);
-      return;
+    // If past Dec 25 this year, set target to next year's Dec 25
+    if(diff <= 0) {
+      targetDate.setFullYear(targetDate.getFullYear() + 1);
+      diff = targetDate - now;
     }
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -304,7 +289,7 @@
   }
 
   updateCountdown();
-  const interval = setInterval(updateCountdown, 1000);
+  setInterval(updateCountdown, 1000);
 
   // Snowfall effect using canvas
   const canvas = document.getElementById('snow-canvas');
@@ -371,19 +356,22 @@
   createSnowflakes(150);
   animateSnow();
 
-  // YouTube Player API Setup for sound toggle
+  // YouTube API for hidden video
   let player;
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
-      height: '360',
-      width: '640',
+      height: '0',
+      width: '0',
       videoId: 'V48HXBP41vs',
       playerVars: {
-        autoplay: 0,
-        controls: 1,
+        autoplay: 1,
+        controls: 0,
         modestbranding: 1,
         rel: 0,
-        iv_load_policy: 3
+        iv_load_policy: 3,
+        mute: 1,            // start muted
+        loop: 1,
+        playlist: 'V48HXBP41vs'  // loop video
       },
       events: {
         onReady: onPlayerReady
@@ -392,12 +380,12 @@
   }
 
   function onPlayerReady(event) {
-    // Start muted by default
     player.mute();
+    player.playVideo();
     document.getElementById('mute-btn').setAttribute('aria-pressed', 'true');
   }
 
-  // Load YouTube API script dynamically
+  // Load YouTube Iframe API script
   const tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
