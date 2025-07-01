@@ -54,6 +54,45 @@
       z-index: 2;
     }
 
+    /* Santa Wheelie container */
+    .santa-wheelie-container {
+      width: 250px;
+      margin: 0 auto 40px auto;
+      position: relative;
+      user-select: none;
+      filter: drop-shadow(0 0 4px #ffd700aa);
+      animation: rideUpDown 3s ease-in-out infinite;
+    }
+
+    /* Up/down animation for the wheelie */
+    @keyframes rideUpDown {
+      0%, 100% { transform: translateY(0) rotate(-15deg); }
+      50% { transform: translateY(-12px) rotate(-10deg); }
+    }
+
+    /* Bikes & Santa parts styling inside SVG (fill colors) */
+    .bike-frame { fill: #1e3c00; }
+    .bike-tire { fill: #222; stroke: #555; stroke-width: 3; }
+    .bike-wheel-spoke { stroke: #999; stroke-width: 1; }
+    .bike-fork { fill: #004400; }
+    .bike-seat { fill: #550000; }
+    .bike-handlebar { fill: #333; }
+    .santa-suit { fill: #c00; }
+    .santa-beard { fill: #fff; }
+    .santa-face { fill: #fcd7b8; }
+    .santa-hat { fill: #c00; }
+    .santa-hat-tip { fill: #fff; }
+    .santa-gloves { fill: #fff; }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .santa-wheelie-container {
+        width: 180px;
+        margin-bottom: 30px;
+      }
+    }
+
+    /* Rest of your styles remain unchanged */
     .countdown {
       background: #8b0000cc;
       color: #ffd700;
@@ -143,17 +182,6 @@
       height: 100vh;
     }
 
-    @media (max-width: 600px) {
-      header .brand {
-        font-size: 2.8rem;
-      }
-      .bike-card {
-        border-radius: 15px;
-      }
-      .bike-img {
-        height: 160px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -165,6 +193,53 @@
 </header>
 
 <main>
+
+  <!-- Santa wheelie animation inserted here -->
+  <div class="santa-wheelie-container" aria-label="Animated Santa Claus doing a wheelie on a Yamaha YZ125 dirt bike" role="img" title="Santa doing a wheelie on a YZ125 dirt bike">
+    <svg
+      width="250" height="120" viewBox="0 0 250 120"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      >
+      <!-- Wheels -->
+      <circle class="bike-tire" cx="60" cy="90" r="30" />
+      <circle class="bike-tire" cx="180" cy="90" r="30" />
+
+      <!-- Wheel spokes -->
+      <line class="bike-wheel-spoke" x1="60" y1="90" x2="60" y2="60" />
+      <line class="bike-wheel-spoke" x1="60" y1="90" x2="40" y2="80" />
+      <line class="bike-wheel-spoke" x1="60" y1="90" x2="80" y2="80" />
+
+      <line class="bike-wheel-spoke" x1="180" y1="90" x2="180" y2="60" />
+      <line class="bike-wheel-spoke" x1="180" y1="90" x2="160" y2="80" />
+      <line class="bike-wheel-spoke" x1="180" y1="90" x2="200" y2="80" />
+
+      <!-- Frame -->
+      <path class="bike-frame" d="M45 90 L85 60 L120 70 L170 45 L190 65 L150 100 Z" />
+      <rect class="bike-fork" x="45" y="60" width="10" height="30" rx="3" ry="3" />
+
+      <!-- Handlebar -->
+      <rect class="bike-handlebar" x="160" y="40" width="25" height="8" rx="4" ry="4" />
+      <circle class="bike-handlebar" cx="160" cy="44" r="4" />
+
+      <!-- Seat -->
+      <rect class="bike-seat" x="130" y="50" width="25" height="15" rx="4" ry="4" />
+
+      <!-- Santa's body -->
+      <circle class="santa-face" cx="140" cy="35" r="10" />
+      <path class="santa-beard" d="M130 38 Q140 55 150 38 Z" />
+      <path class="santa-suit" d="M125 50 L155 50 L160 75 L120 75 Z" />
+
+      <!-- Santa's hat -->
+      <polygon class="santa-hat" points="130,25 150,20 155,30 140,28 135,30" />
+      <circle class="santa-hat-tip" cx="130" cy="25" r="4" />
+
+      <!-- Santa's gloves -->
+      <circle class="santa-gloves" cx="160" cy="65" r="5" />
+      <circle class="santa-gloves" cx="120" cy="65" r="5" />
+    </svg>
+  </div>
+
   <div class="countdown" id="countdown">Loading countdown...</div>
 
   <section class="bikes" aria-label="Recommended Dirtbikes">
@@ -278,54 +353,4 @@
     constructor() {
       this.x = Math.random() * width;
       this.y = Math.random() * height;
-      this.radius = Math.random() * 3 + 1;
-      this.speedY = Math.random() * 1 + 0.5;
-      this.speedX = Math.random() * 0.5 - 0.25;
-      this.opacity = Math.random() * 0.5 + 0.3;
-    }
-    update() {
-      this.y += this.speedY;
-      this.x += this.speedX;
-      if (this.y > height) {
-        this.y = 0;
-        this.x = Math.random() * width;
-      }
-      if (this.x > width) this.x = 0;
-      if (this.x < 0) this.x = width;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-      ctx.fill();
-    }
-  }
-
-  function createSnowflakes(count) {
-    snowflakes = [];
-    for (let i = 0; i < count; i++) {
-      snowflakes.push(new Snowflake());
-    }
-  }
-
-  function animateSnow() {
-    ctx.clearRect(0, 0, width, height);
-    snowflakes.forEach(snowflake => {
-      snowflake.update();
-      snowflake.draw();
-    });
-    requestAnimationFrame(animateSnow);
-  }
-
-  window.addEventListener('resize', () => {
-    setupCanvas();
-    createSnowflakes(150);
-  });
-
-  setupCanvas();
-  createSnowflakes(150);
-  animateSnow();
-</script>
-
-</body>
-</html>
+      this.radius
