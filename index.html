@@ -144,39 +144,24 @@
     height: 100vh;
   }
 
-  /* YouTube player container - hidden but accessible */
-  #youtube-player-container {
+  /* Mute button */
+  #mute-btn {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
-    z-index: 9999;
-    user-select: none;
-  }
-
-  /* Sound toggle button */
-  #sound-toggle {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 15px;
+    right: 15px;
     background: #8b0000cc;
-    border: 2px solid #ffd700;
+    border: none;
     border-radius: 50%;
     width: 48px;
     height: 48px;
+    color: #ffd700;
+    font-size: 24px;
     cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 10px #ffd700cc;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ffd700;
-    font-size: 24px;
-    box-shadow: 0 0 10px #ffd700cc;
-    transition: background-color 0.3s ease;
-  }
-  #sound-toggle:hover {
-    background: #ffd700cc;
-    color: #8b0000;
   }
 
   @media (max-width: 600px) {
@@ -188,15 +173,6 @@
     }
     .bike-img {
       height: 160px;
-    }
-    #youtube-player-container {
-      width: 40px;
-      height: 40px;
-    }
-    #sound-toggle {
-      width: 40px;
-      height: 40px;
-      font-size: 20px;
     }
   }
 </style>
@@ -278,29 +254,22 @@
 
 <canvas id="snow-canvas"></canvas>
 
-<!-- YouTube player container -->
-<div id="youtube-player-container">
-  <div id="player"></div>
-  <button id="sound-toggle" title="Toggle Sound">🔇</button>
-</div>
+<!-- Hidden YouTube player -->
+<div id="player" style="display:none;"></div>
 
+<button id="mute-btn" aria-label="Toggle sound">🔇</button>
+
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-  // Countdown setup: set target date to December 25 this year (or next if past)
-  const now = new Date();
-  let targetDate = new Date(now.getFullYear(), 11, 25, 0, 0, 0, 0); // Dec 25 at 00:00
-
-  if (now > targetDate) {
-    // If today is after Dec 25, set target to next year
-    targetDate = new Date(now.getFullYear() + 1, 11, 25, 0, 0, 0, 0);
-  }
-
+  // Countdown to Dec 25 of this year
   function updateCountdown() {
     const now = new Date();
-    const diff = targetDate - now;
+    const year = now.getFullYear();
+    const targetDate = new Date(year, 11, 25, 0, 0, 0); // Dec 25 midnight
 
+    const diff = targetDate - now;
     if (diff <= 0) {
-      document.getElementById('countdown').innerHTML = "🚀 Your bike has arrived! Ride safe! 🏍️🔥";
-      clearInterval(interval);
+      document.getElementById('countdown').innerHTML = "🎉 Merry Christmas! 🎄🎅🏍️";
       return;
     }
 
@@ -309,30 +278,26 @@
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    document.getElementById('countdown').innerHTML = `
-      <div><strong>${days}</strong> Days</div>
-      <div><strong>${hours.toString().padStart(2,'0')}</strong> Hours</div>
-      <div><strong>${minutes.toString().padStart(2,'0')}</strong> Minutes</div>
-      <div><strong>${seconds.toString().padStart(2,'0')}</strong> Seconds</div>
-    `;
+    document.getElementById('countdown').innerHTML =
+      `<div><strong>${days}</strong> Days</div>` +
+      `<div><strong>${hours.toString().padStart(2,'0')}</strong> Hours</div>` +
+      `<div><strong>${minutes.toString().padStart(2,'0')}</strong> Minutes</div>` +
+      `<div><strong>${seconds.toString().padStart(2,'0')}</strong> Seconds</div>`;
   }
-
+  setInterval(updateCountdown, 1000);
   updateCountdown();
-  const interval = setInterval(updateCountdown, 1000);
 
-  // Snowfall effect using canvas
+  // Snow effect
   const canvas = document.getElementById('snow-canvas');
   const ctx = canvas.getContext('2d');
   let width, height;
   let snowflakes = [];
-
   function setupCanvas() {
     width = window.innerWidth;
     height = window.innerHeight;
     canvas.width = width;
     canvas.height = height;
   }
-
   class Snowflake {
     constructor() {
       this.x = Math.random() * width;
@@ -359,14 +324,12 @@
       ctx.fill();
     }
   }
-
   function createSnowflakes(count) {
     snowflakes = [];
     for (let i = 0; i < count; i++) {
       snowflakes.push(new Snowflake());
     }
   }
-
   function animateSnow() {
     ctx.clearRect(0, 0, width, height);
     snowflakes.forEach(snowflake => {
@@ -375,59 +338,49 @@
     });
     requestAnimationFrame(animateSnow);
   }
-
   window.addEventListener('resize', () => {
     setupCanvas();
     createSnowflakes(150);
   });
-
   setupCanvas();
   createSnowflakes(150);
   animateSnow();
 
-  // YouTube IFrame API for audio player
+  // YouTube Player API
   let player;
-  let isMuted = true;
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
       height: '0',
       width: '0',
-      videoId: 'V48HXBP41vs',
+      videoId: 'V48HXBP41vs', // Your video ID
       playerVars: {
         autoplay: 1,
+        loop: 1,
+        playlist: 'V48HXBP41vs',
         controls: 0,
+        mute: 1,
         modestbranding: 1,
         rel: 0,
-        iv_load_policy: 3,
-        mute: 1,
-        loop: 1,
-        playlist: 'V48HXBP41vs'
+        showinfo: 0,
+        iv_load_policy: 3
       },
       events: {
-        onReady: () => player.playVideo()
+        onReady: (event) => event.target.playVideo()
       }
     });
   }
 
-  // Sound toggle button
-  const soundToggle = document.getElementById('sound-toggle');
-  soundToggle.addEventListener('click', () => {
-    if (!player) return;
-    if (isMuted) {
+  // Mute toggle button
+  const muteBtn = document.getElementById('mute-btn');
+  muteBtn.addEventListener('click', () => {
+    if (player.isMuted()) {
       player.unMute();
-      soundToggle.textContent = '🔊';
-      isMuted = false;
+      muteBtn.textContent = '🔊';
     } else {
       player.mute();
-      soundToggle.textContent = '🔇';
-      isMuted = true;
+      muteBtn.textContent = '🔇';
     }
   });
-
-  // Load YouTube API script asynchronously
-  const tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.body.appendChild(tag);
 </script>
 
 </body>
