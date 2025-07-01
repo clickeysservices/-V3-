@@ -258,5 +258,166 @@
       </a>
       <div class="bike-content">
         <p class="bike-price">$6,599 USD</p>
-        <p class="bike-desc">High-performance 250cc f
+        <p class="bike-desc">High-performance 250cc four-stroke motocross bike with advanced suspension. Great for experienced riders wanting aggressive power and speed.</p>
+      </div>
+    </article>
+  </section>
 
+  <!-- Video Embed with Sound Toggle -->
+  <div class="video-container">
+    <div id="player"></div>
+    <button id="mute-btn" aria-pressed="false">🔈 Sound Off</button>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 𝔹𝕚𝕜𝕖𝕃𝕚𝕗𝕖🌪️V3 | Ride Safe, Ride Hard 🏍️🔥 🎄❄️
+</footer>
+
+<canvas id="snow-canvas"></canvas>
+
+<script>
+  // Countdown to Dec 25, 2025
+  const targetDate = new Date("2025-12-25T00:00:00");
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      document.getElementById('countdown').innerHTML = "🚀 Your bike has arrived! Ride safe! 🏍️🔥";
+      clearInterval(interval);
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById('countdown').innerHTML = `
+      <div><strong>${days}</strong> Days</div>
+      <div><strong>${hours.toString().padStart(2,'0')}</strong> Hours</div>
+      <div><strong>${minutes.toString().padStart(2,'0')}</strong> Minutes</div>
+      <div><strong>${seconds.toString().padStart(2,'0')}</strong> Seconds</div>
+    `;
+  }
+
+  updateCountdown();
+  const interval = setInterval(updateCountdown, 1000);
+
+  // Snowfall effect using canvas
+  const canvas = document.getElementById('snow-canvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let snowflakes = [];
+
+  function setupCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+
+  class Snowflake {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.radius = Math.random() * 3 + 1;
+      this.speedY = Math.random() * 1 + 0.5;
+      this.speedX = Math.random() * 0.5 - 0.25;
+      this.opacity = Math.random() * 0.5 + 0.3;
+    }
+    update() {
+      this.y += this.speedY;
+      this.x += this.speedX;
+      if (this.y > height) {
+        this.y = 0;
+        this.x = Math.random() * width;
+      }
+      if (this.x > width) this.x = 0;
+      if (this.x < 0) this.x = width;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  function createSnowflakes(count) {
+    snowflakes = [];
+    for (let i = 0; i < count; i++) {
+      snowflakes.push(new Snowflake());
+    }
+  }
+
+  function animateSnow() {
+    ctx.clearRect(0, 0, width, height);
+    snowflakes.forEach(snowflake => {
+      snowflake.update();
+      snowflake.draw();
+    });
+    requestAnimationFrame(animateSnow);
+  }
+
+  window.addEventListener('resize', () => {
+    setupCanvas();
+    createSnowflakes(150);
+  });
+
+  setupCanvas();
+  createSnowflakes(150);
+  animateSnow();
+
+  // YouTube Player API Setup for sound toggle
+  let player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '360',
+      width: '640',
+      videoId: 'V48HXBP41vs',
+      playerVars: {
+        autoplay: 0,
+        controls: 1,
+        modestbranding: 1,
+        rel: 0,
+        iv_load_policy: 3
+      },
+      events: {
+        onReady: onPlayerReady
+      }
+    });
+  }
+
+  function onPlayerReady(event) {
+    // Start muted by default
+    player.mute();
+    document.getElementById('mute-btn').setAttribute('aria-pressed', 'true');
+  }
+
+  // Load YouTube API script dynamically
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+
+  // Mute button toggle
+  const muteBtn = document.getElementById('mute-btn');
+  muteBtn.addEventListener('click', () => {
+    if (!player) return;
+
+    if (player.isMuted()) {
+      player.unMute();
+      muteBtn.textContent = "🔊 Sound On";
+      muteBtn.setAttribute('aria-pressed', 'false');
+    } else {
+      player.mute();
+      muteBtn.textContent = "🔈 Sound Off";
+      muteBtn.setAttribute('aria-pressed', 'true');
+    }
+  });
+</script>
+
+</body>
+</html>
