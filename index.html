@@ -3,18 +3,49 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BikeLife V3 with YouTube Audio</title>
+<title>𝔹𝕊𝔺𝕀𝔾𝔿𝕀𝔺𝔾𝕀𝔾𝕃𝔾𝕋𝔾 V3 - Christmas Edition</title>
 <style>
   body {
     margin: 0;
-    font-family: Arial, sans-serif;
     background: #002200;
+    font-family: Arial, sans-serif;
     color: #ffd700;
   }
 
-  /* Your existing styles can go here */
+  header {
+    background: linear-gradient(90deg, #8B0000, #006400);
+    padding: 30px 20px;
+    text-align: center;
+    color: #f0e6d2;
+    border-bottom: 4px solid #ffd700;
+    box-shadow: 0 0 20px #ffd700aa;
+  }
 
-  /* Mute toggle button bottom right */
+  .brand {
+    font-size: 3.5rem;
+    letter-spacing: 4px;
+  }
+
+  .subtitle {
+    font-size: 1.4rem;
+    margin-top: 8px;
+    font-weight: 700;
+    color: #ffd700;
+    text-shadow: 0 0 5px #fffacd;
+  }
+
+  .countdown {
+    background: #8b0000cc;
+    color: #ffd700;
+    font-size: 2.5rem;
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #ffd700aa;
+    margin: 20px auto;
+    max-width: 600px;
+  }
+
   #mute-btn {
     position: fixed;
     bottom: 15px;
@@ -34,32 +65,71 @@
     box-shadow: 0 0 10px #ffd700cc;
   }
 
-  /* Hide the YouTube iframe */
   #player {
     position: fixed;
-    width: 0;
-    height: 0;
-    left: -9999px;
-    top: -9999px;
+    width: 1px;
+    height: 1px;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    pointer-events: none;
+    background: transparent !important;
   }
 </style>
 </head>
 <body>
 
-<button id="mute-btn" aria-label="Toggle Sound">🔇</button>
+<header>
+  <div class="brand">𝔹𝕊𝔺𝕀𝔾𝔿𝕀𝔺𝔾𝕀𝔾𝕃𝔾𝕋𝔾 V3</div>
+  <div class="subtitle">Dirtbike Community Christmas Edition</div>
+</header>
 
-<!-- Hidden YouTube Player -->
+<div class="countdown" id="countdown">
+  Loading countdown...
+</div>
+
+<!-- Invisible YouTube player -->
 <div id="player"></div>
+<button id="mute-btn" aria-label="Toggle Sound">🔇</button>
 
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
+  const targetDate = new Date('December 25, 2025 00:00:00');
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      document.getElementById('countdown').innerHTML = "🎄 Merry Christmas! 🎅🏽🏍️";
+      clearInterval(interval);
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById('countdown').innerHTML = `
+      <div><strong>${days}</strong> Days</div>
+      <div><strong>${hours.toString().padStart(2,'0')}</strong> Hours</div>
+      <div><strong>${minutes.toString().padStart(2,'0')}</strong> Minutes</div>
+      <div><strong>${seconds.toString().padStart(2,'0')}</strong> Seconds</div>
+    `;
+  }
+
+  updateCountdown();
+  const interval = setInterval(updateCountdown, 1000);
+
+  // YouTube API setup
   let player;
 
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
-      height: '0',
-      width: '0',
-      videoId: 'V48HXBP41vs', // your video ID here
+      height: '1',
+      width: '1',
+      videoId: 'V48HXBP41vs',
       playerVars: {
         autoplay: 1,
         loop: 1,
@@ -71,15 +141,15 @@
         iv_load_policy: 3,
         enablejsapi: 1,
         playsinline: 1,
+        origin: window.location.origin
       },
       events: {
         onReady: (event) => {
           event.target.playVideo();
-          event.target.mute(); // start muted to allow autoplay
+          event.target.mute();
         },
         onStateChange: (event) => {
-          // Restart video on end (loop)
-          if(event.data === YT.PlayerState.ENDED) {
+          if (event.data === YT.PlayerState.ENDED) {
             player.playVideo();
           }
         }
@@ -93,7 +163,7 @@
     if (!player) return;
     if (player.isMuted()) {
       player.unMute();
-      player.playVideo(); // ensure audio starts
+      player.playVideo();
       muteBtn.textContent = '🔊';
     } else {
       player.mute();
