@@ -171,8 +171,60 @@
   </div>
 
   <section class="bikes" aria-label="Recommended Dirtbikes">
-    <!-- Your bike cards stay the same -->
-    <!-- ... (keep all the bike cards as-is from your code) ... -->
+    <article class="bike-card">
+      <a href="https://xprousa.com/products/x-pro-x9-125cc-dirt-bike-with-4-speed-manual-transmission-kick-start-big-17-14-tires-cradle-type-steel-tube-frame" target="_blank" rel="noopener noreferrer">
+        <img src="https://th.bing.com/th/id/OIP.gueZYB1R3u2QqLTk5jLkBwHaE9?w=250&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="XPro X9 125cc Dirtbike" class="bike-img" />
+        <h3 class="bike-name">XPro X9 125cc</h3>
+      </a>
+      <div class="bike-content">
+        <p class="bike-price">$989 USD</p>
+        <p class="bike-desc">Reliable 125cc dirtbike perfect for beginners and intermediate riders. Lightweight with a solid frame and smooth handling for trail or track.</p>
+      </div>
+    </article>
+
+    <article class="bike-card">
+      <a href="https://www.kawasaki.com/motorsports/off-road/klx-140" target="_blank" rel="noopener noreferrer">
+        <img src="https://th.bing.com/th/id/OIP.VrjQjHW6fzxwAE8JkZxeNgHaFj?w=245&h=184&c=7&r=0&o=7&pid=1.7&rm=3" alt="Kawasaki KLX 125" class="bike-img" />
+        <h3 class="bike-name">Kawasaki KLX 125</h3>
+      </a>
+      <div class="bike-content">
+        <p class="bike-price">$3,399 USD</p>
+        <p class="bike-desc">Trusted Kawasaki model, 125cc four-stroke engine, ideal for off-road adventures. Known for durability and great resale value.</p>
+      </div>
+    </article>
+
+    <article class="bike-card">
+      <a href="https://www.yamaha-motor.eu/offroad/products/enduro-and-motocross/yz85-monster-energy-edition/" target="_blank" rel="noopener noreferrer">
+        <img src="https://th.bing.com/th/id/OIP.CMGYzzvs_MF7izMj-Y1PNgHaE8?w=290&h=188&c=7&r=0&o=5&pid=1.7" alt="Yamaha YZ85 Monster Edition" class="bike-img" />
+        <h3 class="bike-name">Yamaha YZ85 Monster Edition</h3>
+      </a>
+      <div class="bike-content">
+        <p class="bike-price">$4,199 USD</p>
+        <p class="bike-desc">Aggressive 85cc dirtbike with upgraded suspension and monster graphics. Great for young riders seeking competition-level performance.</p>
+      </div>
+    </article>
+
+    <article class="bike-card">
+      <a href="https://powersports.honda.com/off-road/models/crf125f" target="_blank" rel="noopener noreferrer">
+        <img src="https://th.bing.com/th/id/OIP.-MJZU6Pi57jxnLltGiMMbQHaDt?w=323&h=175&c=7&r=0&o=7&pid=1.7&rm=3" alt="Honda CRF 125F" class="bike-img" />
+        <h3 class="bike-name">Honda CRF 125F</h3>
+      </a>
+      <div class="bike-content">
+        <p class="bike-price">$2,799 USD</p>
+        <p class="bike-desc">Smooth and beginner-friendly 125cc bike with reliable Honda engineering. Perfect for new riders wanting a balance of power and control.</p>
+      </div>
+    </article>
+
+    <article class="bike-card">
+      <a href="https://www.suzuki.com/motorsports/motorcycle-models/2023-rmz250/" target="_blank" rel="noopener noreferrer">
+        <img src="https://th.bing.com/th/id/OIP.95hUDSHwZcHd9GtJwBX3xQHaE7?w=295&h=197&c=7&r=0&o=7&pid=1.7&rm=3" alt="Suzuki RM-Z250" class="bike-img" />
+        <h3 class="bike-name">Suzuki RM-Z250</h3>
+      </a>
+      <div class="bike-content">
+        <p class="bike-price">$6,599 USD</p>
+        <p class="bike-desc">High-performance 250cc four-stroke motocross bike with advanced suspension. Great for experienced riders wanting aggressive power and speed.</p>
+      </div>
+    </article>
   </section>
 </main>
 
@@ -183,8 +235,8 @@
 <canvas id="snow-canvas"></canvas>
 
 <script>
-  // ✅ Fixed: Countdown to December 25, 2025
-  const targetDate = new Date("December 25, 2025 00:00:00");
+  // Fixed countdown target to December 25, 2025 midnight
+  const targetDate = new Date("2025-12-25T00:00:00");
 
   function updateCountdown() {
     const now = new Date();
