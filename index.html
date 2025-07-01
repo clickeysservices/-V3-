@@ -144,21 +144,39 @@
     height: 100vh;
   }
 
-  /* Mute button fixed bottom right */
-  #mute-btn {
-    position: fixed; 
-    bottom: 20px; 
-    right: 20px; 
-    background: #8b0000cc; 
-    border: none; 
-    color: #ffd700; 
-    font-weight: 700; 
-    padding: 12px 18px; 
-    border-radius: 12px; 
-    cursor: pointer; 
-    box-shadow: 0 0 10px #ffd700aa; 
+  /* YouTube player container - hidden but accessible */
+  #youtube-player-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    z-index: 9999;
     user-select: none;
-    z-index: 10000;
+  }
+
+  /* Sound toggle button */
+  #sound-toggle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #8b0000cc;
+    border: 2px solid #ffd700;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffd700;
+    font-size: 24px;
+    box-shadow: 0 0 10px #ffd700cc;
+    transition: background-color 0.3s ease;
+  }
+  #sound-toggle:hover {
+    background: #ffd700cc;
+    color: #8b0000;
   }
 
   @media (max-width: 600px) {
@@ -170,6 +188,15 @@
     }
     .bike-img {
       height: 160px;
+    }
+    #youtube-player-container {
+      width: 40px;
+      height: 40px;
+    }
+    #sound-toggle {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
     }
   }
 </style>
@@ -251,28 +278,30 @@
 
 <canvas id="snow-canvas"></canvas>
 
-<!-- Hidden YouTube video container -->
-<div class="video-container" style="position: fixed; bottom: 0; right: 0; width: 0; height: 0; overflow: hidden; z-index: 9999;">
+<!-- YouTube player container -->
+<div id="youtube-player-container">
   <div id="player"></div>
+  <button id="sound-toggle" title="Toggle Sound">🔇</button>
 </div>
 
-<!-- Mute Toggle Button -->
-<button id="mute-btn" aria-pressed="true" title="Toggle Sound">
-  🔈 Sound Off
-</button>
-
 <script>
-  // Countdown setup: target date Dec 25 of current year (Christmas)
-  const targetDate = new Date(new Date().getFullYear(), 11, 25, 0, 0, 0, 0); // Dec 25, 00:00:00
+  // Countdown setup: set target date to December 25 this year (or next if past)
+  const now = new Date();
+  let targetDate = new Date(now.getFullYear(), 11, 25, 0, 0, 0, 0); // Dec 25 at 00:00
+
+  if (now > targetDate) {
+    // If today is after Dec 25, set target to next year
+    targetDate = new Date(now.getFullYear() + 1, 11, 25, 0, 0, 0, 0);
+  }
 
   function updateCountdown() {
     const now = new Date();
-    let diff = targetDate - now;
+    const diff = targetDate - now;
 
-    // If past Dec 25 this year, set target to next year's Dec 25
-    if(diff <= 0) {
-      targetDate.setFullYear(targetDate.getFullYear() + 1);
-      diff = targetDate - now;
+    if (diff <= 0) {
+      document.getElementById('countdown').innerHTML = "🚀 Your bike has arrived! Ride safe! 🏍️🔥";
+      clearInterval(interval);
+      return;
     }
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -289,7 +318,7 @@
   }
 
   updateCountdown();
-  setInterval(updateCountdown, 1000);
+  const interval = setInterval(updateCountdown, 1000);
 
   // Snowfall effect using canvas
   const canvas = document.getElementById('snow-canvas');
@@ -356,8 +385,9 @@
   createSnowflakes(150);
   animateSnow();
 
-  // YouTube API for hidden video
+  // YouTube IFrame API for audio player
   let player;
+  let isMuted = true;
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
       height: '0',
@@ -369,42 +399,35 @@
         modestbranding: 1,
         rel: 0,
         iv_load_policy: 3,
-        mute: 1,            // start muted
+        mute: 1,
         loop: 1,
-        playlist: 'V48HXBP41vs'  // loop video
+        playlist: 'V48HXBP41vs'
       },
       events: {
-        onReady: onPlayerReady
+        onReady: () => player.playVideo()
       }
     });
   }
 
-  function onPlayerReady(event) {
-    player.mute();
-    player.playVideo();
-    document.getElementById('mute-btn').setAttribute('aria-pressed', 'true');
-  }
-
-  // Load YouTube Iframe API script
-  const tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
-
-  // Mute button toggle
-  const muteBtn = document.getElementById('mute-btn');
-  muteBtn.addEventListener('click', () => {
+  // Sound toggle button
+  const soundToggle = document.getElementById('sound-toggle');
+  soundToggle.addEventListener('click', () => {
     if (!player) return;
-
-    if (player.isMuted()) {
+    if (isMuted) {
       player.unMute();
-      muteBtn.textContent = "🔊 Sound On";
-      muteBtn.setAttribute('aria-pressed', 'false');
+      soundToggle.textContent = '🔊';
+      isMuted = false;
     } else {
       player.mute();
-      muteBtn.textContent = "🔈 Sound Off";
-      muteBtn.setAttribute('aria-pressed', 'true');
+      soundToggle.textContent = '🔇';
+      isMuted = true;
     }
   });
+
+  // Load YouTube API script asynchronously
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
 </script>
 
 </body>
