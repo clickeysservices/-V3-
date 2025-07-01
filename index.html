@@ -301,7 +301,7 @@
   class Snowflake {
     constructor() {
       this.x = Math.random() * width;
-      this.y = Math.random() * height;
+ this.y = Math.random() * height;
       this.radius = Math.random() * 3 + 1;
       this.speedY = Math.random() * 1 + 0.5;
       this.speedX = Math.random() * 0.5 - 0.25;
@@ -365,7 +365,10 @@
         iv_load_policy: 3
       },
       events: {
-        onReady: (event) => event.target.playVideo()
+        onReady: (event) => {
+          event.target.playVideo();
+          event.target.mute(); // start muted
+        }
       }
     });
   }
@@ -375,6 +378,7 @@
   muteBtn.addEventListener('click', () => {
     if (player.isMuted()) {
       player.unMute();
+      player.playVideo(); // ensure audio plays after unmuting
       muteBtn.textContent = '🔊';
     } else {
       player.mute();
