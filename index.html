@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>𝔹𝕚𝕜𝕖𝕃𝕚𝕗𝕖🌪️V3 Dirtbike Community - Christmas Edition</title>
 <style>
-  @import url('https://th.bing.com/th/id/OIP.WzncUB31oYCGbPop9D2ZawHaEK?w=326&h=183&c=7&r=0&o=7&cb=thvnextc1&pid=1.7&rm=3');
+  @import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap');
 
   body {
     margin: 0;
@@ -121,6 +121,39 @@
     color: #e6f0d8;
   }
 
+  /* Video container and button */
+  .video-container {
+    max-width: 640px;
+    margin: 40px auto 60px auto;
+    position: relative;
+    text-align: center;
+  }
+
+  #player {
+    width: 100%;
+    height: 360px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #ffd700cc;
+  }
+
+  #mute-btn {
+    margin-top: 10px;
+    background: #8b0000cc;
+    border: none;
+    color: #ffd700;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ffd700aa;
+    transition: background 0.3s ease;
+    user-select: none;
+  }
+  #mute-btn:hover {
+    background: #ffd700cc;
+    color: #8b0000;
+  }
+
   footer {
     text-align: center;
     padding: 25px 10px;
@@ -153,6 +186,9 @@
     }
     .bike-img {
       height: 160px;
+    }
+    #player {
+      height: 200px;
     }
   }
 </style>
@@ -222,113 +258,5 @@
       </a>
       <div class="bike-content">
         <p class="bike-price">$6,599 USD</p>
-        <p class="bike-desc">High-performance 250cc four-stroke motocross bike with advanced suspension. Great for experienced riders wanting aggressive power and speed.</p>
-      </div>
-    </article>
-  </section>
-</main>
+        <p class="bike-desc">High-performance 250cc f
 
-<footer>
-  &copy; 2025 𝔹𝕚𝕜𝕖𝕃𝕚𝕗𝕖🌪️V3 | Ride Safe, Ride Hard 🏍️🔥 🎄❄️
-</footer>
-
-<canvas id="snow-canvas"></canvas>
-
-<script>
-  // Fixed countdown target to December 25, 2025 midnight
-  const targetDate = new Date("2025-12-25T00:00:00");
-
-  function updateCountdown() {
-    const now = new Date();
-    const diff = targetDate - now;
-
-    if (diff <= 0) {
-      document.getElementById('countdown').innerHTML = "🚀 Your bike has arrived! Ride safe! 🏍️🔥";
-      clearInterval(interval);
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    document.getElementById('countdown').innerHTML = `
-      <div><strong>${days}</strong> Days</div>
-      <div><strong>${hours.toString().padStart(2,'0')}</strong> Hours</div>
-      <div><strong>${minutes.toString().padStart(2,'0')}</strong> Minutes</div>
-      <div><strong>${seconds.toString().padStart(2,'0')}</strong> Seconds</div>
-    `;
-  }
-
-  updateCountdown();
-  const interval = setInterval(updateCountdown, 1000);
-
-  // Snowfall effect using canvas
-  const canvas = document.getElementById('snow-canvas');
-  const ctx = canvas.getContext('2d');
-  let width, height;
-  let snowflakes = [];
-
-  function setupCanvas() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-  }
-
-  class Snowflake {
-    constructor() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.radius = Math.random() * 3 + 1;
-      this.speedY = Math.random() * 1 + 0.5;
-      this.speedX = Math.random() * 0.5 - 0.25;
-      this.opacity = Math.random() * 0.5 + 0.3;
-    }
-    update() {
-      this.y += this.speedY;
-      this.x += this.speedX;
-      if (this.y > height) {
-        this.y = 0;
-        this.x = Math.random() * width;
-      }
-      if (this.x > width) this.x = 0;
-      if (this.x < 0) this.x = width;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-      ctx.fill();
-    }
-  }
-
-  function createSnowflakes(count) {
-    snowflakes = [];
-    for (let i = 0; i < count; i++) {
-      snowflakes.push(new Snowflake());
-    }
-  }
-
-  function animateSnow() {
-    ctx.clearRect(0, 0, width, height);
-    snowflakes.forEach(snowflake => {
-      snowflake.update();
-      snowflake.draw();
-    });
-    requestAnimationFrame(animateSnow);
-  }
-
-  window.addEventListener('resize', () => {
-    setupCanvas();
-    createSnowflakes(150);
-  });
-
-  setupCanvas();
-  createSnowflakes(150);
-  animateSnow();
-</script>
-
-</body>
-</html>
