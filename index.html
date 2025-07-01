@@ -15,7 +15,7 @@
       line-height: 1.6;
       overflow-x: hidden;
       position: relative;
-      padding-bottom: 160px; /* To prevent content under fixed santa */
+      padding-bottom: 160px; /* space for moving santa */
     }
 
     header {
@@ -144,35 +144,82 @@
       height: 100vh;
     }
 
-    /* Sticky Santa & bike container */
+    /* Container for Santa riding the bike */
     #santa-wheelie {
       position: fixed;
       bottom: 10px;
-      right: 15px;
       width: 220px;
-      height: auto;
-      z-index: 9999;
-      pointer-events: none; /* So it doesn't block clicks */
+      height: 130px;
+      pointer-events: none;
       user-select: none;
       filter: drop-shadow(0 0 6px #ffd700cc);
-      animation: wheelieBounce 3s ease-in-out infinite;
+      z-index: 9999;
+      display: flex;
+      align-items: flex-end;
+      animation: rideAcross 15s linear infinite;
     }
 
-    /* Wheelie bounce effect */
-    @keyframes wheelieBounce {
-      0%, 100% { transform: translateY(0) rotate(-15deg); }
-      50% { transform: translateY(-12px) rotate(-10deg); }
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      #santa-wheelie {
-        width: 150px;
-        bottom: 8px;
-        right: 8px;
+    /* Horizontal animation from left to right */
+    @keyframes rideAcross {
+      0% {
+        left: -240px; /* start off screen left */
+        transform: rotate(-15deg);
+      }
+      50% {
+        transform: rotate(-12deg);
+      }
+      100% {
+        left: 100vw; /* off screen right */
+        transform: rotate(-15deg);
       }
     }
 
+    /* Bike image */
+    #santa-bike {
+      width: 100%;
+      height: auto;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Santa image on top */
+    #santa-rider {
+      position: absolute;
+      bottom: 12px;
+      left: 38px;
+      width: 55%;
+      height: auto;
+      z-index: 2;
+      pointer-events: none;
+      user-select: none;
+      filter: drop-shadow(0 0 4px #ff0000aa);
+      transform-origin: bottom center;
+      animation: riderBob 3s ease-in-out infinite;
+    }
+
+    /* Slight bobbing animation for Santa */
+    @keyframes riderBob {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-4px) rotate(2deg);
+      }
+    }
+
+    /* Responsive scaling */
+    @media (max-width: 600px) {
+      #santa-wheelie {
+        width: 150px;
+        height: 90px;
+        bottom: 8px;
+      }
+      #santa-rider {
+        left: 25px;
+        width: 55%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -249,123 +296,7 @@
   &copy; 2025 𝔹𝕚𝕜𝕖𝕃𝕚𝕗𝕖🌪️V3 | Ride Safe, Ride Hard 🏍️🔥 🎄❄️
 </footer>
 
-<!-- Sticky Santa on YZ125 doing wheelie -->
+<!-- Santa riding Yamaha YZ125 wheelie - base64 embedded images -->
+
 <div id="santa-wheelie" aria-label="Santa Claus riding a Yamaha YZ125 dirt bike doing a wheelie" role="img" title="Santa on Yamaha YZ125 wheelie">
-  <!-- Background bike image (real Yamaha YZ125 in wheelie) -->
-  <img
-    src="https://i.imgur.com/z4aXeRk.png"
-    alt="Yamaha YZ125 dirt bike doing a wheelie"
-    style="width: 100%; height: auto; display: block;"
-  />
-  <!-- Overlay Santa image positioned on bike -->
-  <img
-    src="https://i.imgur.com/2N1O2yW.png"
-    alt="Santa Claus riding"
-    style="position: absolute; bottom: 20px; left: 40px; width: 60%; height: auto; pointer-events: none;"
-  />
-</div>
-
-<canvas id="snow-canvas"></canvas>
-
-<script>
-  // Countdown to December 25, 2025 00:00:00
-  const targetDate = new Date('December 25, 2025 00:00:00').getTime();
-
-  function updateCountdown() {
-    const now = new Date().getTime();
-    const diff = targetDate - now;
-
-    if (diff <= 0) {
-      document.getElementById('countdown').innerHTML = "🚀 Your bike has arrived! Ride safe! 🏍️🔥";
-      clearInterval(interval);
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    document.getElementById('countdown').innerHTML = `
-      <div><strong>${days}</strong> Days</div>
-      <div><strong>${hours.toString().padStart(2,'0')}</strong> Hours</div>
-      <div><strong>${minutes.toString().padStart(2,'0')}</strong> Minutes</div>
-      <div><strong>${seconds.toString().padStart(2,'0')}</strong> Seconds</div>
-    `;
-  }
-
-  updateCountdown();
-  const interval = setInterval(updateCountdown, 1000);
-
-  // Snowfall
-  const canvas = document.getElementById('snow-canvas');
-  const ctx = canvas.getContext('2d');
-  let width, height;
-  let snowflakes = [];
-
-  function setupCanvas() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-  }
-
-  class Snowflake {
-    constructor() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.radius = Math.random() * 3 + 1;
-      this.speedY = Math.random() * 1 + 0.5;
-      this.speedX = Math.random() * 0.5 - 0.25;
-      this.opacity = Math.random() * 0.5 + 0.3;
-    }
-    update() {
-      this.y += this.speedY;
-      this.x += this.speedX;
-      if (this.y > height) {
-        this.y = 0;
-        this.x = Math.random() * width;
-      }
-      if (this.x > width) this.x = 0;
-      if (this.x < 0) this.x = width;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-      ctx.fill();
-    }
-  }
-
-  function createSnowflakes(count) {
-    snowflakes = [];
-    for (let i = 0; i < count; i++) {
-      snowflakes.push(new Snowflake());
-    }
-  }
-
-  function animateSnow() {
-    ctx.clearRect(0, 0, width, height);
-    snowflakes.forEach(snowflake => {
-      snowflake.update();
-      snowflake.draw();
-    });
-    requestAnimationFrame(animateSnow);
-  }
-
-  window.addEventListener('resize', () => {
-    setupCanvas();
-    createSnowflakes(150);
-  });
-
-  setupCanvas();
-  createSnowflakes(150);
-  animateSnow();
-</script>
-
-</body>
-</html>
-
-      
-     
- 
+  <img id="santa-bike" alt="Yamaha YZ125 dirt bike doing a wheelie" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOoAAAByCAYAAAB4RMYxAAAACXBIWXMAAAsTAAALEwEAmpwYAAABUklEQVR4nO3VMQ0AAAjDMO5fNCMHAAfAjaZyEhDAAAAAAAAwN6I0cTPrdmtWq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1
