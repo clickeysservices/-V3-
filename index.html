@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>𝔹𝕊𝕅𝕂𝕋𝕆𝕀𝕒𝔾🌪️V3 Dirtbike Community - Christmas Edition</title>
+<title>𝔹𝕚𝕜𝕖𝕃𝕚𝕗𝕖🌪️V3 Dirtbike Community - Christmas Edition</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap');
 
@@ -133,22 +133,7 @@
     box-shadow: 0 -2px 15px #ffd700aa inset;
   }
 
-  #santa-bike {
-    position: fixed;
-    bottom: 80px;
-    left: -200px;
-    font-size: 2.5rem;
-    z-index: 9999;
-    animation: rideSanta 20s linear infinite;
-    pointer-events: none;
-    text-shadow: 0 0 6px #fff;
-  }
-
-  @keyframes rideSanta {
-    0% { left: -200px; transform: rotateY(0deg); }
-    100% { left: 110vw; transform: rotateY(0deg); }
-  }
-
+  /* Snow canvas full screen on top */
   #snow-canvas {
     position: fixed;
     top: 0;
@@ -158,39 +143,55 @@
     width: 100vw;
     height: 100vh;
   }
+
+  @media (max-width: 600px) {
+    header .brand {
+      font-size: 2.8rem;
+    }
+    .bike-card {
+      border-radius: 15px;
+    }
+    .bike-img {
+      height: 160px;
+    }
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="brand">𝔹𝕊𝕅𝕂𝕋𝕆𝕀𝕒𝔾🌪️V3</div>
+  <div class="brand">𝔹𝕚𝕜𝕖𝕃𝕚𝕗𝕖🌪️V3</div>
   <div class="subtitle">Dirtbike Community & Recommended Bikes</div>
-  <div class="decor">🎄❄️🏍️️🎅</div>
+  <div class="decor">🎄❄️🏍️🎅</div>
 </header>
 
 <main>
-  <div class="countdown" id="countdown">Loading countdown...</div>
+  <div class="countdown" id="countdown">
+    Loading countdown...
+  </div>
 
-  <!-- bike cards remain the same (not repeating here for space) -->
-
+  <section class="bikes" aria-label="Recommended Dirtbikes">
+    <!-- Your bike cards stay the same -->
+    <!-- ... (keep all the bike cards as-is from your code) ... -->
+  </section>
 </main>
 
-<div id="santa-bike">🎅🏍️️💨</div>
-<canvas id="snow-canvas"></canvas>
-
 <footer>
-  &copy; 2025 𝔹𝕊𝕅𝕂𝕋𝕆𝕀𝕒𝔾🌪️V3 | Ride Safe, Ride Hard 🏍️️🔥 🎄❄️
+  &copy; 2025 𝔹𝕚𝕜𝕖𝕃𝕚𝕗𝕖🌪️V3 | Ride Safe, Ride Hard 🏍️🔥 🎄❄️
 </footer>
 
+<canvas id="snow-canvas"></canvas>
+
 <script>
-  const targetDate = new Date("2025-12-25T00:00:00");
+  // ✅ Fixed: Countdown to December 25, 2025
+  const targetDate = new Date("December 25, 2025 00:00:00");
 
   function updateCountdown() {
     const now = new Date();
     const diff = targetDate - now;
 
     if (diff <= 0) {
-      document.getElementById('countdown').innerHTML = "🚀 Your bike has arrived! Merry Christmas! 🎅🏍️️🔥";
+      document.getElementById('countdown').innerHTML = "🚀 Your bike has arrived! Ride safe! 🏍️🔥";
       clearInterval(interval);
       return;
     }
@@ -210,6 +211,72 @@
 
   updateCountdown();
   const interval = setInterval(updateCountdown, 1000);
+
+  // Snowfall effect using canvas
+  const canvas = document.getElementById('snow-canvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let snowflakes = [];
+
+  function setupCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+
+  class Snowflake {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.radius = Math.random() * 3 + 1;
+      this.speedY = Math.random() * 1 + 0.5;
+      this.speedX = Math.random() * 0.5 - 0.25;
+      this.opacity = Math.random() * 0.5 + 0.3;
+    }
+    update() {
+      this.y += this.speedY;
+      this.x += this.speedX;
+      if (this.y > height) {
+        this.y = 0;
+        this.x = Math.random() * width;
+      }
+      if (this.x > width) this.x = 0;
+      if (this.x < 0) this.x = width;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  function createSnowflakes(count) {
+    snowflakes = [];
+    for (let i = 0; i < count; i++) {
+      snowflakes.push(new Snowflake());
+    }
+  }
+
+  function animateSnow() {
+    ctx.clearRect(0, 0, width, height);
+    snowflakes.forEach(snowflake => {
+      snowflake.update();
+      snowflake.draw();
+    });
+    requestAnimationFrame(animateSnow);
+  }
+
+  window.addEventListener('resize', () => {
+    setupCanvas();
+    createSnowflakes(150);
+  });
+
+  setupCanvas();
+  createSnowflakes(150);
+  animateSnow();
 </script>
+
 </body>
 </html>
